@@ -3,12 +3,12 @@
 #include "register_types.h"
 
 #include "core/class_db.h"
-#include "ros.h"
+#include "godot_ros.h"
 
-void register_ros_types() {
-    ClassDB::register_class<ROS>();
+void register_godot_ros_types() {
+    ClassDB::register_class<RosNode>();
 }
 
-void unregister_ros_types() {
+void unregister_godot_ros_types() {
     // Nothing to do here in this example.
 }
