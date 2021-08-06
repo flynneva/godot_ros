@@ -10,6 +10,12 @@ Clone this repo into your `godot/modules/` directory.
 
 Modify the `godot_ros/SCsub` file with your ROS2 distro and desired cpp compiler flag.
 
+```
+# godot_ros/SCsub file within this repo, lines 5 and 6
+ros_distro = "galactic"
+cpp_version = "-std=c++17"
+```
+
 Compile Godot:
 
 ```
@@ -38,6 +44,7 @@ func _ready():
 
 ### Future work
 
+- support other platforms, should be just configuring the `SCsub` file I think (i.e. Windows)
 - add other ROS2 features to `godot_ros`
 - generate documentation for this module
 - add more demos/examples to documentation
