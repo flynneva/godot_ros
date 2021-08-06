@@ -2,11 +2,14 @@
 
 Import('env')
 
+ros_distro = "galactic"
+cpp_version = "-std=c++17"
+
 env_ros = env.Clone()
 env_ros.add_source_files(env.modules_sources, "*.cpp") # Add all cpp files to the build
 
 # These paths are relative to /modules/ros
-env_ros.Append(CPPPATH=["/opt/ros/galactic/include"])
+env_ros.Append(CPPPATH=["/opt/ros/" + ros_distro + "/include"])
 
 # LIBPATH and LIBS need to be set on the real "env" (not the clone)
 # to link the specified libraries to the Godot executable.
@@ -14,10 +17,10 @@ env_ros.Append(CPPPATH=["/opt/ros/galactic/include"])
 # This is a path relative to /modules/ros/ where your .a libraries reside.
 # If you are compiling the module externally (not in the godot source tree),
 # these will need to be full paths.
-env.Append(LIBPATH=['/opt/ros/galactic/lib'])
+env.Append(LIBPATH=['/opt/ros/" + ros_distro + "/lib'])
 
 # ROS needs c++ version compilier flag
-env_ros.Append(CCFLAGS=['-std=c++1z'])
+env_ros.Append(CCFLAGS=[cpp_version])
 
 # Check with the documentation of the external library to see which library
 # files should be included/linked.
