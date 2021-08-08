@@ -8,22 +8,23 @@ cpp_version = "-std=c++17"
 ros_include_path = "/opt/ros/" + ros_distro + "/include"
 ros_lib_path = "/opt/ros/" + ros_distro + "/lib"
 
-env_ros = env.Clone()
-env_ros.add_source_files(env.modules_sources, "*.cpp") # Add all cpp files to the build
+# Add all cpp files to the build
+env.add_source_files(env.modules_sources, "src/*.cpp")
+env.add_source_files(env.modules_sources, "*.cpp")
 
 # These paths are relative to /modules/ros
-env_ros.Append(CPPPATH=[ros_include_path])
+env.Append(CPPPATH=["include", ros_include_path])
 
 # LIBPATH and LIBS need to be set on the real "env" (not the clone)
 # to link the specified libraries to the Godot executable.
 
-# This is a path relative to /modules/ros/ where your .a libraries reside.
+# This is a path relative to /modules where your .a libraries reside.
 # If you are compiling the module externally (not in the godot source tree),
 # these will need to be full paths.
 env.Append(LIBPATH=[ros_lib_path])
 
 # ROS needs c++ version compilier flag
-env_ros.Append(CCFLAGS=[cpp_version])
+env.Append(CCFLAGS=[cpp_version])
 
 # Check with the documentation of the external library to see which library
 # files should be included/linked.

@@ -36,11 +36,26 @@ And be able to use the `RosNode` Godot object in a GDScript:
 ```
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# calls rclcpp::init(0, nullptr) to make sure ROS is started up
+	var ros_init = RosInit.new()
+
+	# creates ROS node
 	var ros_node = RosNode.new()
 	var node_name = ros_node.get_name()
+
 	print("node_name: ", node_name)
+	pass # Replace with function body.
 ```
 
+### Troubleshooting
+
+Make sure you have sourced your ROS overlay **before** trying to start Godot....otherwise you will see this error:
+
+```
+./bin/godot.x11.tools.64: error while loading shared libraries: librclcpp.so: cannot open shared object file: No such file or directory
+```
+
+To solve this, just run `source /opt/ros/<ros-distro>/setup.bash` and restart Godot.
 
 ### Future work
 
