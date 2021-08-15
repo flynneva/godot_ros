@@ -31,7 +31,7 @@ cd godot/
 ./bin/godot.x11.tools.64
 ```
 
-A simple talker demo would look something like this:
+A simple GDScript talker demo would look something like this:
 
 ``` GDSCript
 extends Node2D
@@ -39,16 +39,18 @@ extends Node2D
 signal timeout
 
 # calls rclcpp::init(0, nullptr) to make sure ROS is started up
-var ros_init = RosInit.new()
+var ros_talker = Talker.new()
 
 var g_timer = null
+
+var count = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# spin nodes that were added to executors
 	# not really need for talker demo but will be needed later for subscribing
 	# to ROS2 topics
-	ros_init.spin_some()
+	ros_talker.spin_some()
 	
 	g_timer = Timer.new()
 	add_child(g_timer)
@@ -60,8 +62,9 @@ func _ready():
 	pass # Replace with function body.
 
 func _on_Timer_timeout():
-  print("talking")
-  ros_init.talk()
+  print("godot is talking: " + String(count))
+  ros_talker.talk(count)
+  count += 1
 ```
 
 ### Troubleshooting
