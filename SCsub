@@ -39,6 +39,7 @@ env.Append(
     'rmw_implementation',
     'tracetools',
     'ament_index_cpp',
+    'libstd_msgs__rosidl_typesupport_cpp',
     'rosidl_typesupport_cpp',
     'rosidl_typesupport_c',
     'rosidl_runtime_c',

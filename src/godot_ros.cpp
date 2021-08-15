@@ -15,6 +15,6 @@ void RosNode::_bind_methods()
 
 void RosInit::_bind_methods()
 {
-  // ClassDB::bind_method(D_METHOD("add_node", "node") &RosInit::addNode);
-  ClassDB::bind_method(D_METHOD("spin", "node"), &RosInit::spin);
+  ClassDB::bind_method(D_METHOD("talk"), &RosInit::talk);
+  ClassDB::bind_method(D_METHOD("spin_some"), &RosInit::spin_some);
 }

@@ -6,6 +6,7 @@
 #include "core/reference.h"
 
 #include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
 
 class RosNode
 : public Reference,
@@ -27,35 +28,44 @@ class RosInit : public Reference {
 public:
   RosInit() {
     rclcpp::init(0, nullptr);
+    
+    m_node = std::make_shared<rclcpp::Node>("godot_node");
+
+    rclcpp::QoS qos(rclcpp::KeepLast(7));
+    m_pub = m_node->create_publisher<std_msgs::msg::String>("talker", qos);
   }
 
   ~RosInit() {
     rclcpp::shutdown();
   }
 
-  /// adds a given node to the multithreaded executor
-  //  void addNode(Object * node) {
-  //    auto rosNodeSharedPtr = getShared(node);
-  //    m_executor.add_node(rosNodeSharedPtr);
-  //  }
+  void spin_some() {
+    rclcpp::spin_some(m_node);
+  }
 
-  void spin(Object * node) {
-    auto rosNode = cast_to<rclcpp::Node>(node);
-    std::shared_ptr<rclcpp::Node> rosNodeSharedPtr(rosNode);
-    rclcpp::spin(rosNodeSharedPtr);
+  // publish message
+  void talk() {
+    m_msg = std::make_unique<std_msgs::msg::String>();
+    m_msg->data = "Hello from Godot: " + std::to_string(m_count++);
+    RCLCPP_INFO(m_node->get_logger(), "Publishing: '%s'", m_msg->data.c_str());
+
+    m_pub->publish(std::move(m_msg));
   }
 
 protected:
-  // run the ROS nodes in separate threads
-  // rclcpp::executors::MultiThreadedExecutor m_executor;
-
   static void _bind_methods();
 
-  // TODO(flynneva): figure out a better way to spin the node)
-  /// get shared_ptr from Godot Object node
-  //   rclcpp::Node::SharedPtr getShared(Object * node) {
-  //     auto rosNode = cast_to<rclcpp::Node>(node);
-  //     return std::shared_ptr<rclcpp::Node>(rosNode);
-  //   }
+  // replace rclcpp::Node with your custom node
+  std::shared_ptr<rclcpp::Node> m_node;
+
+  // publisher
+  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr m_pub;
+
+  // message to publish
+  std::unique_ptr<std_msgs::msg::String> m_msg;
+
+  // counter for message
+  size_t m_count = 1;
+  
 };
 #endif // GODOT__GODOT_ROS__GODOT_ROS_HPP
