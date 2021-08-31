@@ -3,7 +3,7 @@
 #include "register_types.h"
 
 #include "core/class_db.h"
-#include "godot_ros/godot_ros.hpp"
+#include "godot_ros/demos/talker.hpp"
 
 void register_godot_ros_types() {
     ClassDB::register_class<Talker>();

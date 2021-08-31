@@ -8,6 +8,8 @@ Make sure to have both ROS2 and the Godot source installed on your workstation.
 
 Clone this repo into your `godot/modules/` directory.
 
+Alternatively you can place this module in an external `~/modules` directory and pass in the filepath to scons at build time.
+
 Modify the `godot_ros/SCsub` file with your ROS2 distro and desired cpp compiler flag.
 
 ```
@@ -22,6 +24,13 @@ Compile Godot:
 # make sure you are in the Godot source root directory
 cd godot/
 scons -j8 platform=x11  # specific for linux/ubuntu
+```
+
+If you have placed the `godot_ros` module in an external `~/module/` directory, pass in the filepath to scons with the following command:
+
+```
+cd godot/
+scons -j8 platform=x11 custom_modules=/path/to/modules/directory
 ```
 
 Once compiled, you should be able to start Godot:

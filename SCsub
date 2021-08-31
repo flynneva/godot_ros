@@ -9,7 +9,7 @@ ros_include_path = "/opt/ros/" + ros_distro + "/include"
 ros_lib_path = "/opt/ros/" + ros_distro + "/lib"
 
 # Add all cpp files to the build
-env.add_source_files(env.modules_sources, "src/*.cpp")
+env.add_source_files(env.modules_sources, "src/demos/*.cpp")
 env.add_source_files(env.modules_sources, "*.cpp")
 
 # These paths are relative to /modules/ros

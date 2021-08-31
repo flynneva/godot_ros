@@ -1,6 +1,6 @@
 /* godot_ros.cpp */
 
-#include "godot_ros/godot_ros.hpp"
+#include "godot_ros/demos/talker.hpp"
 
 void Talker::_bind_methods()
 {

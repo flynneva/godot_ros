@@ -1,7 +1,7 @@
 /* ros.h */
 
-#ifndef GODOT__GODOT_ROS__GODOT_ROS_HPP
-#define GODOT__GODOT_ROS__GODOT_ROS_HPP
+#ifndef GODOT__GODOT_ROS__DEMOS__TALKER_HPP
+#define GODOT__GODOT_ROS__DEMOS__TALKER_HPP
 
 #include "core/reference.h"
 
@@ -49,4 +49,4 @@ protected:
   // message to publish
   std::unique_ptr<std_msgs::msg::String> m_msg;
 };
-#endif // GODOT__GODOT_ROS__GODOT_ROS_HPP
+#endif // GODOT__GODOT_ROS__DEMOS__TALKER_HPP
