@@ -40,6 +40,7 @@ env.Append(
     'tracetools',
     'ament_index_cpp',
     'libstd_msgs__rosidl_typesupport_cpp',
+    'libsensor_msgs__rosidl_typesupport_cpp',
     'rosidl_typesupport_cpp',
     'rosidl_typesupport_c',
     'rosidl_runtime_c',
@@ -51,4 +52,4 @@ env.Append(
     'rcl_interfaces__rosidl_generator_c',
     'rcl_logging_interface',
     'rcl_logging_spdlog',
-    'builtin_interfaces__rosidl_generator_c'])
+    'builtin_interfaces__rosidl_generator_c' ])
