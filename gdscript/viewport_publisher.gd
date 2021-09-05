@@ -28,6 +28,7 @@ func _on_Timer_timeout():
 	yield(VisualServer, "frame_post_draw")
 	# Retrieve the captured image.
 	var img = get_viewport().get_texture().get_data()
+	img.flip_y()
 	img.convert(Image.FORMAT_RGB8)
 	ros_viewport.pubImage(img)
 	count += 1
