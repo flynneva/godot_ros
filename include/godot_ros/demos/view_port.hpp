@@ -2,6 +2,7 @@
 
 #ifndef GODOT__GODOT_ROS__DEMOS__VIEW_PORT_HPP
 #define GODOT__GODOT_ROS__DEMOS__VIEW_PORT_HPP
+#include <cstring>
 
 #include "core/reference.h"
 #include "core/image.h"
@@ -32,8 +33,15 @@ public:
   // publish message
   inline void pubImage(Ref<Image> img) {
     m_msg = std::make_unique<sensor_msgs::msg::Image>();
-    RCLCPP_INFO(m_node->get_logger(), "Publishing image");
+    // populate image data
+    m_msg->height = img->get_height();
+    m_msg->width = img->get_width();
 
+    // TODO(flynneva): switch statement to handle encodings to match those supported in std ROS2 formats
+    m_msg->encoding = "rgb8";
+    m_msg->is_bigendian = false;
+    m_msg->step = m_msg->width * 1; // TODO(flynneva): fix this later for different encodings
+    // std::memcpy(&m_msg->data, img->get_data().write().ptr(), img->get_data().size());
     m_pub->publish(std::move(m_msg));
   }
 
