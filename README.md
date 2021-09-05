@@ -40,7 +40,7 @@ cd godot/
 ./bin/godot.x11.tools.64
 ```
 
-A simple GDScript talker demo would look something like this:
+A simple [GDScript talker demo](gdscript/talker.gd) would look something like this:
 
 ``` GDSCript
 extends Node2D
@@ -75,6 +75,8 @@ func _on_Timer_timeout():
   ros_talker.talk(count)
   count += 1
 ```
+
+Other `GDScript` examples are in the [`gdscript/` directory](gdscript/)
 
 ### Troubleshooting
 

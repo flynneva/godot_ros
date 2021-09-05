@@ -3,6 +3,7 @@
 #ifndef GODOT__GODOT_ROS__DEMOS__VIEW_PORT_HPP
 #define GODOT__GODOT_ROS__DEMOS__VIEW_PORT_HPP
 #include <cstring>
+#include <iostream>
 
 #include "core/reference.h"
 #include "core/image.h"
@@ -18,8 +19,7 @@ public:
     
     m_node = std::make_shared<rclcpp::Node>("godot_image_node");
 
-    rclcpp::QoS qos(rclcpp::KeepLast(7));
-    m_pub = m_node->create_publisher<sensor_msgs::msg::Image>("image", qos);
+    m_pub = m_node->create_publisher<sensor_msgs::msg::Image>("image", 10);
   }
 
   ~ViewPort() {
@@ -31,7 +31,7 @@ public:
   }
 
   // publish message
-  inline void pubImage(Ref<Image> img) {
+  inline void pubImage(const Ref<Image> & img) {
     m_msg = std::make_unique<sensor_msgs::msg::Image>();
     // populate image data
     m_msg->height = img->get_height();
@@ -40,8 +40,11 @@ public:
     // TODO(flynneva): switch statement to handle encodings to match those supported in std ROS2 formats
     m_msg->encoding = "rgb8";
     m_msg->is_bigendian = false;
-    m_msg->step = m_msg->width * 1; // TODO(flynneva): fix this later for different encodings
-    // std::memcpy(&m_msg->data, img->get_data().write().ptr(), img->get_data().size());
+    m_msg->step = img->get_data().size() / m_msg->height;
+    m_msg->data.resize(img->get_data().size());
+    // TODO(flynneva): optimize this / find a better way
+    std::memcpy(&m_msg->data[0], img->get_data().write().ptr(), img->get_data().size());
+
     m_pub->publish(std::move(m_msg));
   }
 
