@@ -2,6 +2,9 @@
 
 This repo is a [Godot Module](https://docs.godotengine.org/en/stable/development/cpp/binding_to_external_libraries.html#using-the-module) meant to connect [Robotic Operating System 2 (ROS2)](https://docs.ros.org/en/galactic/Installation.html) and the [Godot Game Engine](https://docs.godotengine.org/en/stable/about/index.html).
 
+
+![image](https://user-images.githubusercontent.com/6157095/137567694-b5daf9dc-3462-426b-909b-924ca94fc724.png)
+
 ### Quick Start
 
 Make sure to have both ROS2 and the Godot source installed on your workstation.
