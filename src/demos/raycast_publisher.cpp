@@ -19,24 +19,12 @@
 // THE SOFTWARE.
 
 
-/* register_types.cpp */
+/* godot_ros.cpp */
 
-#include "register_types.h"
-#include "core/class_db.h"
-#include "godot_ros/demos/talker.hpp"
-#include "godot_ros/demos/cmd_listener.hpp"
-#include "godot_ros/demos/view_port.hpp"
 #include "godot_ros/demos/raycast_publisher.hpp"
 
-
-void register_godot_ros_types() {
-    ClassDB::register_class<Talker>();
-    ClassDB::register_class<ViewPort>();
-    ClassDB::register_class<CmdListener>();
-    ClassDB::register_class<RayCastPublisher>();
-
-}
-
-void unregister_godot_ros_types() {
-    // Nothing to do here in this example.
+void RayCastPublisher::_bind_methods()
+{
+  ClassDB::bind_method(D_METHOD("publish_raycast_msg", "ray_cast_array"), &RayCastPublisher::publish_raycast_msg);
+  ClassDB::bind_method(D_METHOD("spin_some"), &RayCastPublisher::spin_some);
 }
