@@ -1,4 +1,4 @@
-// Copyright 2021 Evan Flynn
+// Copyright 2022 Evan Flynn, Miguel Angel Rodriguez
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,14 @@
 // THE SOFTWARE.
 
 
-/* register_types.h */
+#ifndef GODOT_ROS_REGISTER_TYPES_H
+#define GODOT_ROS_REGISTER_TYPES_H
 
-void register_godot_ros_types();
-void unregister_godot_ros_types();
+#include "modules/register_module_types.h"
+
+void initialize_godot_ros_module(ModuleInitializationLevel p_level);
+void uninitialize_godot_ros_module(ModuleInitializationLevel p_level);
+/* yes, the word in the middle must be the same as the module folder name */
+
+
+#endif // GODOT_ROS_REGISTER_TYPES_H

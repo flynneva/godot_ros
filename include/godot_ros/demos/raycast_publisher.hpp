@@ -20,15 +20,15 @@
 #ifndef GODOT__GODOT_ROS__DEMOS__RayCastPublisher_HPP
 #define GODOT__GODOT_ROS__DEMOS__RayCastPublisher_HPP
 
-#include "core/reference.h"
+#include "core/object/ref_counted.h"
 
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/point_cloud.hpp"
 #include "geometry_msgs/msg/point32.hpp"
 // https://docs.ros2.org/galactic/api/sensor_msgs/msg/PointCloud.html
 
-class RayCastPublisher : public Reference {
-  GDCLASS(RayCastPublisher, Reference);
+class RayCastPublisher : public RefCounted {
+  GDCLASS(RayCastPublisher, RefCounted);
 public:
   RayCastPublisher() {
     rclcpp::init(0, nullptr);

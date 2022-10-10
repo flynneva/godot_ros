@@ -20,13 +20,13 @@
 #ifndef GODOT__GODOT_ROS__DEMOS__TALKER_HPP
 #define GODOT__GODOT_ROS__DEMOS__TALKER_HPP
 
-#include "core/reference.h"
+#include "core/object/ref_counted.h"
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-class Talker : public Reference {
-  GDCLASS(Talker, Reference);
+class Talker : public RefCounted {
+  GDCLASS(Talker, RefCounted);
 public:
   Talker() {
     rclcpp::init(0, nullptr);

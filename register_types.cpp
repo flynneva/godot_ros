@@ -1,5 +1,5 @@
-// Copyright 2021 Evan Flynn
-//
+// Copyright 2022 Evan Flynn, Miguel ANgel Rodriguez
+
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -22,21 +22,26 @@
 /* register_types.cpp */
 
 #include "register_types.h"
-#include "core/class_db.h"
+
+#include "core/object/class_db.h"
 #include "godot_ros/demos/talker.hpp"
 #include "godot_ros/demos/cmd_listener.hpp"
 #include "godot_ros/demos/view_port.hpp"
 #include "godot_ros/demos/raycast_publisher.hpp"
 
-
-void register_godot_ros_types() {
+void initialize_godot_ros_module(ModuleInitializationLevel p_level) {
+    if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
+            return;
+    }
     ClassDB::register_class<Talker>();
     ClassDB::register_class<ViewPort>();
     ClassDB::register_class<CmdListener>();
     ClassDB::register_class<RayCastPublisher>();
-
 }
 
-void unregister_godot_ros_types() {
-    // Nothing to do here in this example.
+void uninitialize_godot_ros_module(ModuleInitializationLevel p_level) {
+    if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
+            return;
+    }
+   // Nothing to do here in this example.
 }

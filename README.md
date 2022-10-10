@@ -9,6 +9,14 @@ This repo is a [Godot Module](https://docs.godotengine.org/en/stable/development
 ### Update: Support for Godot4
 It now supports Godot4, use the `godot4` branch
 
+When compiling, recommended commands are the following, setting the path where you have downloaded the godot_ros module:
+
+```shell
+source /opt/ros/${ROS_DISTRO}/setup.bash
+scons -j$(nproc) custom_modules=/ABS_PATH_TO/godot_4_modules
+```
+
+
 ### Quick Start
 
 Make sure to have both ROS2 and the Godot source installed on your workstation.
@@ -19,7 +27,7 @@ Alternatively you can place this module in an external `~/modules` directory and
 
 Modify the `godot_ros/SCsub` file with your ROS2 distro and desired cpp compiler flag.
 
-```
+```conf
 # godot_ros/SCsub file within this repo, lines 5 and 6
 ros_distro = "galactic"
 cpp_version = "-std=c++17"
@@ -27,7 +35,7 @@ cpp_version = "-std=c++17"
 
 Compile Godot:
 
-```
+```shell
 # make sure you are in the Godot source root directory
 cd godot/
 scons -j8 platform=x11  # specific for linux/ubuntu
@@ -35,14 +43,14 @@ scons -j8 platform=x11  # specific for linux/ubuntu
 
 If you have placed the `godot_ros` module in an external `~/module/` directory, pass in the filepath to scons with the following command:
 
-```
+```shell
 cd godot/
 scons -j8 platform=x11 custom_modules=/path/to/modules/directory
 ```
 
 Once compiled, you should be able to start Godot:
 
-```
+```shell
 cd godot/
 ./bin/godot.x11.tools.64
 ```
@@ -89,7 +97,7 @@ Other `GDScript` examples are in the [`gdscript/` directory](gdscript/)
 
 Make sure you have sourced your ROS overlay **before** trying to start Godot....otherwise you will see this error:
 
-```
+```log
 ./bin/godot.x11.tools.64: error while loading shared libraries: librclcpp.so: cannot open shared object file: No such file or directory
 ```
 
