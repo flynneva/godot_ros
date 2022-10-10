@@ -22,14 +22,14 @@
 #include <cstring>
 #include <iostream>
 
-#include "core/reference.h"
-#include "core/image.h"
+#include "core/object/ref_counted.h"
+#include "core/io/image.h"
 
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 
-class ViewPort : public Reference {
-  GDCLASS(ViewPort, Reference);
+class ViewPort : public RefCounted {
+  GDCLASS(ViewPort, RefCounted);
 public:
   ViewPort() {
     rclcpp::init(0, nullptr);
@@ -60,7 +60,7 @@ public:
     m_msg->step = img->get_data().size() / m_msg->height;
     m_msg->data.resize(img->get_data().size());
     // TODO(flynneva): optimize this / find a better way
-    std::memcpy(&m_msg->data[0], img->get_data().write().ptr(), img->get_data().size());
+    std::memcpy(&m_msg->data[0], img->get_data().ptrw(), img->get_data().size());
 
     m_pub->publish(std::move(m_msg));
   }

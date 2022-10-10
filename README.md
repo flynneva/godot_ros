@@ -9,6 +9,13 @@ This repo is a [Godot Module](https://docs.godotengine.org/en/stable/development
 ### Update: Support for Godot4
 It now supports Godot4, use the `godot4` branch
 
+When compiling, reccomended commands are the following, setting teh path where you have downloaded the godot_ros module:
+
+```
+scons -j$(nproc) custom_modules=/ABS_PATH_TO/godot_4_modules
+```
+
+
 ### Quick Start
 
 Make sure to have both ROS2 and the Godot source installed on your workstation.
