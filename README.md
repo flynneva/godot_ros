@@ -5,6 +5,10 @@ This repo is a [Godot Module](https://docs.godotengine.org/en/stable/development
 
 ![image](https://user-images.githubusercontent.com/6157095/137567694-b5daf9dc-3462-426b-909b-924ca94fc724.png)
 
+
+### Update: Support for Godot4
+It now supports Godot4, use the `godot4` branch
+
 ### Quick Start
 
 Make sure to have both ROS2 and the Godot source installed on your workstation.
