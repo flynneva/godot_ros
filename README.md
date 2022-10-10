@@ -12,6 +12,7 @@ It now supports Godot4, use the `godot4` branch
 When compiling, reccomended commands are the following, setting teh path where you have downloaded the godot_ros module:
 
 ```
+source /opt/ros/$ROS_VERSION/setup.bash
 scons -j$(nproc) custom_modules=/ABS_PATH_TO/godot_4_modules
 ```
 
