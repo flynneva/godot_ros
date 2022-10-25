@@ -21,10 +21,10 @@
 
 /* godot_ros.cpp */
 
-#include "godot_ros/demos/cmd_listener.hpp"
+#include "godot_ros/demos/raycast_publisher.hpp"
 
-void CmdListener::_bind_methods()
+void RayCastPublisher::_bind_methods()
 {
-  ClassDB::bind_method(D_METHOD("get_cmd"), &CmdListener::get_cmd);
-  ClassDB::bind_method(D_METHOD("spin_some"), &CmdListener::spin_some);
+  ClassDB::bind_method(D_METHOD("publish_raycast_msg", "ray_cast_array"), &RayCastPublisher::publish_raycast_msg);
+  ClassDB::bind_method(D_METHOD("spin_some"), &RayCastPublisher::spin_some);
 }

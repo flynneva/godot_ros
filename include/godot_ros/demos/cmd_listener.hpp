@@ -1,4 +1,4 @@
-// Copyright 2021 Evan Flynn
+// Copyright 2022 Evan Flynn
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,13 @@
 #ifndef GODOT__GODOT_ROS__DEMOS__CmdListener_HPP
 #define GODOT__GODOT_ROS__DEMOS__CmdListener_HPP
 
-#include "core/reference.h"
+#include "core/object/ref_counted.h"
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-class CmdListener : public Reference {
-  GDCLASS(CmdListener, Reference);
+class CmdListener : public RefCounted {
+  GDCLASS(CmdListener, RefCounted);
 public:
   CmdListener() {
     rclcpp::init(0, nullptr);
