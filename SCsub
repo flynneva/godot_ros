@@ -1,19 +1,25 @@
 # SCsub
+import os
 
 Import('env')
 
-ros_distro = "galactic"
+ros_distro = "iron"
 cpp_version = "-std=c++17"
 
-ros_include_path = "/opt/ros/" + ros_distro + "/include"
-ros_lib_path = "/opt/ros/" + ros_distro + "/lib"
+ros_dir = "/opt/ros/" + ros_distro
+
+def getSubDirs(base_path: str):
+  return [base_path + name for name in os.listdir(base_path) if os.path.isdir(base_path + name)]
+
+ros_includes = getSubDirs(ros_dir + "/include/")
+ros_libs = getSubDirs(ros_dir + "/lib/") + [ros_dir + "/lib/"]
 
 # Add all cpp files to the build
 env.add_source_files(env.modules_sources, "src/demos/*.cpp")
 env.add_source_files(env.modules_sources, "*.cpp")
 
-# These paths are relative to /modules/ros
-env.Append(CPPPATH=["include", ros_include_path])
+# These paths are relative to /modules/ros if they are not absolute
+env.Append(CPPPATH=["include"] + ros_includes)
 
 # LIBPATH and LIBS need to be set on the real "env" (not the clone)
 # to link the specified libraries to the Godot executable.
@@ -21,35 +27,11 @@ env.Append(CPPPATH=["include", ros_include_path])
 # This is a path relative to /modules where your .a libraries reside.
 # If you are compiling the module externally (not in the godot source tree),
 # these will need to be full paths.
-env.Append(LIBPATH=[ros_lib_path])
+env.Append(LIBPATH=ros_libs)
 
 # ROS needs c++ version compilier flag
 env.Append(CCFLAGS=[cpp_version])
 
 # Check with the documentation of the external library to see which library
 # files should be included/linked.
-env.Append(
-  LIBS=[
-    'rclcpp',
-    'rcl',
-    'rcl_yaml_param_parser',
-    'rcutils',
-    'rcpputils',
-    'rmw',
-    'rmw_implementation',
-    'tracetools',
-    'ament_index_cpp',
-    'libstd_msgs__rosidl_typesupport_cpp',
-    'libsensor_msgs__rosidl_typesupport_cpp',
-    'rosidl_typesupport_cpp',
-    'rosidl_typesupport_c',
-    'rosidl_runtime_c',
-    'liblibstatistics_collector',
-    'statistics_msgs__rosidl_typesupport_cpp',
-    'rosgraph_msgs__rosidl_typesupport_cpp',
-    'rcl_interfaces__rosidl_typesupport_cpp',
-    'rcl_interfaces__rosidl_typesupport_c',
-    'rcl_interfaces__rosidl_generator_c',
-    'rcl_logging_interface',
-    'rcl_logging_spdlog',
-    'builtin_interfaces__rosidl_generator_c' ])
+env.Append(LIBS=ros_libs)
