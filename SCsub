@@ -1,6 +1,8 @@
 # SCsub
 import os
 
+from pathlib import Path
+
 Import('env')
 
 ros_distro = "iron"
@@ -8,11 +10,29 @@ cpp_version = "-std=c++17"
 
 ros_dir = "/opt/ros/" + ros_distro
 
-def getSubDirs(base_path: str):
-  return [base_path + name for name in os.listdir(base_path) if os.path.isdir(base_path + name)]
+def getSubDirs(base_path: str, with_base_path: bool = True):
+    if not base_path.endswith("/"):
+        base_path += "/"
+    sub_dirs = [name for name in os.listdir(base_path) if os.path.isdir(base_path + name)]
+    if with_base_path:
+        sub_dirs = [f"{base_path}/{name}" for name in sub_dirs]
+    return sub_dirs
 
-ros_includes = getSubDirs(ros_dir + "/include/")
-ros_libs = getSubDirs(ros_dir + "/lib/") + [ros_dir + "/lib/"]
+
+def getLibNames(base_path: str):
+    if not base_path.endswith("/"):
+        base_path += "/"
+    lib_dirs = [
+        Path(name).name
+        for name in os.listdir(base_path)
+        if os.path.isfile(base_path + name)
+        if name.endswith(".so") or name.endswith(".a")
+    ]
+    return lib_dirs
+
+ros_includes = getSubDirs(ros_dir + "/include")
+ros_lib_path = ros_dir + "/lib"
+ros_libs = getLibNames(ros_lib_path)
 
 # Add all cpp files to the build
 env.add_source_files(env.modules_sources, "src/demos/*.cpp")
@@ -27,7 +47,7 @@ env.Append(CPPPATH=["include"] + ros_includes)
 # This is a path relative to /modules where your .a libraries reside.
 # If you are compiling the module externally (not in the godot source tree),
 # these will need to be full paths.
-env.Append(LIBPATH=ros_libs)
+env.Append(LIBPATH=[ros_lib_path])
 
 # ROS needs c++ version compilier flag
 env.Append(CCFLAGS=[cpp_version])
