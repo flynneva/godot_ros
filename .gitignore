@@ -6,6 +6,7 @@
 *.a
 *.os
 .scons*
+.cache/
 
 # For when users clone godot-cpp into this repo
 godot-cpp/
