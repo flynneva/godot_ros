@@ -1,0 +1,41 @@
+[configuration]
+
+entry_symbol = "godot_ros_init"
+compatibility_minimum = "4.1"
+reloadable = true
+
+[libraries]
+
+macos.debug = "res://bin/libgodot_ros.macos.template_debug.framework"
+macos.release = "res://bin/libgodot_ros.macos.template_release.framework"
+ios.debug = "res://bin/libgodot_ros.ios.template_debug.xcframework"
+ios.release = "res://bin/libgodot_ros.ios.template_release.xcframework"
+windows.debug.x86_32 = "res://bin/libgodot_ros.windows.template_debug.x86_32.dll"
+windows.release.x86_32 = "res://bin/libgodot_ros.windows.template_release.x86_32.dll"
+windows.debug.x86_64 = "res://bin/libgodot_ros.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://bin/libgodot_ros.windows.template_release.x86_64.dll"
+linux.debug.x86_64 = "res://bin/libgodot_ros.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "res://bin/libgodot_ros.linux.template_release.x86_64.so"
+linux.debug.arm64 = "res://bin/libgodot_ros.linux.template_debug.arm64.so"
+linux.release.arm64 = "res://bin/libgodot_ros.linux.template_release.arm64.so"
+linux.debug.rv64 = "res://bin/libgodot_ros.linux.template_debug.rv64.so"
+linux.release.rv64 = "res://bin/libgodot_ros.linux.template_release.rv64.so"
+android.debug.x86_64 = "res://bin/libgodot_ros.android.template_debug.x86_64.so"
+android.release.x86_64 = "res://bin/libgodot_ros.android.template_release.x86_64.so"
+android.debug.arm64 = "res://bin/libgodot_ros.android.template_debug.arm64.so"
+android.release.arm64 = "res://bin/libgodot_ros.android.template_release.arm64.so"
+
+[dependencies]
+
+ios.debug = {
+    "res://bin/libgodot-cpp.ios.template_debug.xcframework": ""
+}
+ios.release = {
+    "res://bin/libgodot-cpp.ios.template_release.xcframework": ""
+}
+
+linux.debug.x86_4 = {
+    "/opt/ros/rolling/lib/librcutils.so": "",
+    "/opt/ros/rolling/lib/librclcpp.so": "",
+    "/opt/ros/rolling/lib/libstd_msgs__rosidl_typesupport_cpp.so": "",
+}

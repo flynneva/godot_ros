@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwq788wufefn8"]
+
+[ext_resource type="Script" path="res://talker.gd" id="1_ah107"]
+
+[node name="Talker" type="RosNode"]
+script = ExtResource("1_ah107")
