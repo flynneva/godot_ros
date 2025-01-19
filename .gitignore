@@ -1,2 +1,13 @@
 **__pycache__
 *.o
+
+# files from scons
+*.so
+*.a
+*.os
+.scons*
+
+# For when users clone godot-cpp into this repo
+godot-cpp/
+# For the generated extension api json file from godot
+extension_api.json

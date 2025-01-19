@@ -1,0 +1,126 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - 'main'
+    tags:
+      - "**"
+  pull_request:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+# only run one workflow at a time, cancel any running ones
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  get_ros_distros:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install curl jq
+      - name: Get active distributions
+        run: |
+          wget https://raw.githubusercontent.com/flynneva/active_ros_distros/0.1.0/main.py -O active_ros_distros.py
+          python3 -m pip install rosdistro
+          python3 active_ros_distros.py --distribution-type ros2
+      - name: Generate actions matrix
+        id: set-matrix
+        run: |
+          ACTIVE_ROS_DISTROS=()
+          DOCKER_DISTRO_MATRIX=()
+          RAW_DOCKER_JSON=$(curl -s "https://hub.docker.com/v2/repositories/rostooling/setup-ros-docker/tags?page_size=1000")
+          while read distro; do
+            # TODO: fix GLIBC humble issue
+            if [ "$distro" == "humble" ]; then
+              continue
+            fi
+            ACTIVE_ROS_DISTROS+=( $distro )
+          done < "/tmp/active_ros_distros.txt"
+          DISTRO_STR="["
+          MATRIX_STR="["
+          for distro in ${ACTIVE_ROS_DISTROS[@]}; do
+            docker_image=$(echo $RAW_DOCKER_JSON |
+              jq -r --arg DISTRO "$distro" '.results[] | select(.tag_status=="active") | select(.name | contains("ros-base-latest")) | select(.name | contains($DISTRO)) | .name'  |
+              sort -u)
+          
+            # Handle the case if two docker images were declared for one distro
+            # e.g. rolling moving from one Ubuntu Jammy to Ubuntu Noble
+            docker_image_arr=($docker_image)
+          
+            
+            DISTRO_STR+="\"${distro}\", "
+            MATRIX_STR+="{docker_image:\"${docker_image_arr[-1]}\",ros_distro:\"${distro}\"}, "
+          done
+          
+          # Remove trailing , at end
+          DISTRO_STR=${DISTRO_STR%??}
+          MATRIX_STR=${MATRIX_STR%??}
+          # Close up brackets
+          DISTRO_STR+="]"
+          MATRIX_STR+="]"
+          echo "DISTRO_STR: ${DISTRO_STR}"
+          echo "MATRIX_STR: ${MATRIX_STR}"
+          echo "series=$DISTRO_STR" >> $GITHUB_OUTPUT
+          echo "matrix=$MATRIX_STR" >> $GITHUB_OUTPUT
+    outputs:
+      series: ${{ steps.set-matrix.outputs.series }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+  build_and_test:
+    runs-on: [ubuntu-latest]
+    needs: get_ros_distros
+    strategy:
+      fail-fast: false
+      matrix:
+        # aka branch names of godot-cpp
+        godot_version:
+            - 4.1
+            - 4.2
+            - 4.3
+        ros_distro: ${{ fromJson(needs.get_ros_distros.outputs.series) }}
+        include:
+          ${{ fromJson(needs.get_ros_distros.outputs.matrix) }}
+    container:
+      image: rostooling/setup-ros-docker:${{ matrix.docker_image }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies and config
+        run: |
+          apt-get update
+          apt-get install -y unzip scons libpulse-dev
+          git config --global --add safe.directory /__w/godot_ros/godot_ros
+      - name: Install Godot version
+        uses: chickensoft-games/setup-godot@v1
+        with:
+          # Version must include major, minor, and patch, and be >= 4.0.0
+          # Pre-release label is optional.
+          version: ${{ matrix.godot_version }}.0 # also valid: 4.0.0.rc1 or 4.0.0, etc
+          # Use .NET-enabled version of Godot (the default is also true).
+          use-dotnet: false
+          # Include the Godot Export Templates (the default is false).
+          include-templates: false
+      - name: Clone and init godot-cpp repository
+        run: |
+          git clone -b ${{ matrix.godot_version }} https://github.com/godotengine/godot-cpp
+          git submodule update --init
+      - name: Dump this Godot's extension API json
+        run: |
+          godot --headless --dump-extension-api
+      - name: Build this GDExtension and godot-cpp
+        shell: bash
+        run: |
+          source /opt/ros/${{ matrix.ros_distro }}/setup.bash
+          scons platform=linux custom_api_file=./extension_api.json
+      - name: Test loading GDExtension in Godot
+        shell: bash
+        run: |
+          source /opt/ros/${{ matrix.ros_distro }}/setup.bash
+          cd demo
+          godot --headless --import
