@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwq788wufefn8"]
+[gd_scene load_steps=3 format=3 uid="uid://cwq788wufefn8"]
 
 [ext_resource type="Script" path="res://talker.gd" id="1_ah107"]
+[ext_resource type="Script" path="res://view.gd" id="1_whmkn"]
 
-[node name="Talker" type="RosNode"]
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_whmkn")
+
+[node name="Talker" type="RosNode" parent="."]
 script = ExtResource("1_ah107")

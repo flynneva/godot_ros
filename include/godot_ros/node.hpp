@@ -6,12 +6,13 @@
 #include <godot_cpp/classes/node.hpp>
 
 #include "std_msgs/msg/string.hpp"
-
+#include "sensor_msgs/msg/image.hpp"
 
 namespace godot {
 
 using SupportedPublisherTypes = std::variant<
-    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr,
+	rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr
 >;
 
 
@@ -57,5 +58,6 @@ public:
 
 /// @brief Include all the template implementations for each data type
 #include "godot_ros/string.tpp"
+#include "godot_ros/image.tpp"
 
 #endif  // GODOT_ROS__NODE_HPP

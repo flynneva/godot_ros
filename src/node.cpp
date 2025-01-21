@@ -10,6 +10,9 @@ void RosNode::_bind_methods() {
 
   ClassDB::bind_method(D_METHOD("create_string_publisher"), &RosNode::create_publisher<String>);
   ClassDB::bind_method(D_METHOD("publish_string"), &RosNode::publish<String>);
+
+  ClassDB::bind_method(D_METHOD("create_image_publisher"), &RosNode::create_publisher<Ref<Image>>);
+  ClassDB::bind_method(D_METHOD("publish_image"), &RosNode::publish<Ref<Image>>);
 }
 
 void RosNode::init_rclcpp_node(const String & node_name) {

@@ -79,12 +79,3 @@ else:
     )
 
 Default(library)
-
-
-print("=" * 50)
-print("Copy this section to the dependencies section of the .gdextension file")
-for lib in ros_libs:
-    print(f'"{ros_lib_path}/{lib}": "",')
-
-print("NOTE: The above libraries should be added to the `*.gdextension` file in the dependencies section")
-print("=" * 50)

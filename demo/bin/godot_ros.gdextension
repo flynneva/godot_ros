@@ -1,8 +1,8 @@
 [configuration]
 
 entry_symbol = "godot_ros_init"
-compatibility_minimum = "4.1"
-reloadable = true
+compatibility_minimum = "4.3"
+reloadable = false
 
 [libraries]
 
@@ -32,10 +32,4 @@ ios.debug = {
 }
 ios.release = {
     "res://bin/libgodot-cpp.ios.template_release.xcframework": ""
-}
-
-linux.debug.x86_4 = {
-    "/opt/ros/rolling/lib/librcutils.so": "",
-    "/opt/ros/rolling/lib/librclcpp.so": "",
-    "/opt/ros/rolling/lib/libstd_msgs__rosidl_typesupport_cpp.so": "",
 }
