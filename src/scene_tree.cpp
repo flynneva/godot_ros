@@ -8,13 +8,16 @@ namespace godot
 
 void RosSceneTree::_initialize()
 {
-    rclcpp::init(0, nullptr);
+    if (!rclcpp::ok()) {
+        rclcpp::init(0, nullptr);
+    }
+
+    SceneTree::_initialize();
 }
 
 void RosSceneTree::_finalize()
 {
-    // Shutdown the ROS 2 context
-    rclcpp::shutdown();
+    SceneTree::_finalize();
 }
 
 void RosSceneTree::_bind_methods() {}

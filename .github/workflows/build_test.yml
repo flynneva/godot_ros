@@ -93,7 +93,7 @@ jobs:
         run: |
           apt-get update
           apt-get install -y unzip scons libpulse-dev
-          git config --global --add safe.directory /__w/godot_ros/godot_ros
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install Godot version
         uses: chickensoft-games/setup-godot@v1
         with:
@@ -110,7 +110,7 @@ jobs:
           git submodule update --init
       - name: Dump this Godot's extension API json
         run: |
-          godot --headless --dump-extension-api
+          godot --headless --verbose --dump-extension-api
       - name: Build this GDExtension and godot-cpp
         shell: bash
         run: |
@@ -121,4 +121,4 @@ jobs:
         run: |
           source /opt/ros/${{ matrix.ros_distro }}/setup.bash
           cd demo
-          godot --headless --import
+          godot --headless --verbose --import

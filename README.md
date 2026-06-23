@@ -48,14 +48,48 @@ create an issue here in this repository with what you
 think is missing.
 
 ## Building
+These instructions are based on Ubuntu 26.04, Godot 4.5, ROS2 Lyrical.
 
-For now, refer to [the CI script](.github/workflows/build_test.yml)
+First install dependencies:
+
+`sudo apt-get install -y unzip scons libpulse-dev git`
+
+Clone the `godot-cpp` library:
+
+`git clone https://github.com/godotengine/godot-cpp` 
+
+You may need a specific version according to your Godot version, in that case (make sure `<version>` exists as a branch of `godot-cpp`).
+
+`git clone -b <version> https://github.com/godotengine/godot-cpp`
+
+Godot is self-contained, and its executable needs to be in the `$PATH` so execute:
+
+`ls -sf <path-to-godotfile> ~/.local/bin/godot` 
+
+Now the extension API for Godot needs to be generated:
+
+`godot --headless --dump-extension-api`
+
+and the extension can be built (after sourcing):
+
+`source /opt/ros/$ROS_DISTRO/setup.bash`
+
+`scons platform=linux custom_api_file=./extension_api.json`
+
+If this is successful, you can test loading the extension:
+
+`cd demo/`
+
+`godot --headless --import`
+
+You can also refer to [the CI script](.github/workflows/build_test.yml)
 for the most up-to-date information on how to build this extension.
 
 ## Examples
 
 Refer to [the demos](demo/) for examples of GDScript using this
-extension.
+extension. See [demo/README.md](demo/README.md) for step-by-step
+instructions on building and running the demo on a plain Ubuntu terminal.
 
 ## Running Godot with the `godot_ros` GDExtension
 

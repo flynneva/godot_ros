@@ -1,12 +1,14 @@
 extends Node3D
 
-var ros_node = RosNode.new()
+var ros_node: RosNode
 
 var count = 0
 var elapsed_time = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	ros_node = RosNode.new()
+	add_child(ros_node)
 	ros_node.init_rclcpp_node("image_node")  # Initialize the rclcpp::Node
 	ros_node.create_image_publisher("/image_topic", 10)
 	pass # Replace with function body.
@@ -23,3 +25,9 @@ func _process(delta: float) -> void:
 		count += 1
 		print("Published image: " + str(count))
 	pass
+
+
+func _exit_tree() -> void:
+	if ros_node != null:
+		ros_node.free()
+		ros_node = null
